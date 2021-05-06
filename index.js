@@ -21,7 +21,7 @@ mongoose
   })
   .then(() => {
     // Run your code here, after you have insured that the connection was made
-    const result = Recipe.create({
+    Recipe.create({
       title: "Ovo mexido",
       level: "Easy Peasy",
       ingredients: [
@@ -36,27 +36,24 @@ mongoose
         "https://p7m4z9n9.stackpathcdn.com/wp-content/uploads/2020/02/ovo_mexido_receita32.jpg",
       duration: 8,
       creator: "Chef Felipe",
+    }).then((result) => {
+      console.log("CREATED RECIPE =>", result);
+
+      Recipe.insertMany(data).then((allRecipes) => {
+        console.log("All Recipes =>", allRecipes);
+
+        Recipe.findOneAndUpdate(
+          { title: "Rigatoni alla Genovese" },
+          { $set: { duration: 100 } },
+          { new: true }
+        ).then((updatedRecipe) => {
+          console.log("UPDATED RECIPE =>", updatedRecipe);
+        });
+        Recipe.deleteOne({ title: "Carrot Cake" }).then((deleteRecipe) => {
+          console.log("DELETE RESULT =>", deleteRecipe);
+        });
+      });
     });
-
-    console.log("CREATED RECIPE =>", result);
-
-    const allRecipes = Recipe.insertMany(data);
-
-    console.log("All Recipes =>", allRecipes);
-
-    const updatedRecipe = Recipe.findOneAndUpdate(
-      { "title": "Rigatoni alla Genovese" },
-      { $set: { "duration": 100 } },
-      { new: true }
-    );
-
-    console.log("UPDATED RECIPE =>", updatedRecipe);
-
-    const deleteRecipe = Recipe.deleteOne({
-      title: "Carrot Cake",
-    });
-
-    console.log("DELETE RESULT =>", deleteRecipe);
   })
   .catch((error) => {
     console.error("Error connecting to the database", error);
