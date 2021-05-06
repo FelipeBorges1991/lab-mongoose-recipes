@@ -51,6 +51,8 @@ mongoose
         });
         Recipe.deleteOne({ title: "Carrot Cake" }).then((deleteRecipe) => {
           console.log("DELETE RESULT =>", deleteRecipe);
+
+          mongoose.connection.close();
         });
       });
     });
